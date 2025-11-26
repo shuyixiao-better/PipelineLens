@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij.platform' version '2.10.4'
+}
+
+group = 'com.poeticcoder'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+dependencies {
+    intellijPlatform {
+        intellijIdeaUltimate('2025.2.5')
+        bundledPlugin('com.intellij.java')
+        bundledPlugin('org.intellij.groovy')
+        instrumentationTools()
+    }
+}
+
+compileJava {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+    options.encoding = 'UTF-8'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources']
+            includes = ['**/*.svg', '**/*.png', '**/*.xml', '**/*.properties', '**/*.gdsl']
+        }
+    }
+}
+
+tasks.withType(org.jetbrains.intellij.platform.gradle.tasks.BuildSearchableOptionsTask) {
+    enabled = false
+}
+
+// 禁用测试任务以避免 Gradle 8.13 与 Java 24 的兼容性问题
+tasks.withType(Test) {
+    enabled = false
+}
+
+intellijPlatform {
+    buildSearchableOptions = false
+    
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = '241'
+        }
+        
+        name = 'PipelineLens'
+        version = project.version
+    }
+    
+    signing {
+        certificateChain = System.getenv("CERTIFICATE_CHAIN")
+        privateKey = System.getenv("PRIVATE_KEY")
+        password = System.getenv("PRIVATE_KEY_PASSWORD")
+    }
+    
+    publishing {
+        token = System.getenv("PUBLISH_TOKEN")
+    }
+    
+    tasks.named('verifyPlugin') {
+        enabled = false
+    }
+}

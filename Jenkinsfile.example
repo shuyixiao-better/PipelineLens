@@ -1,0 +1,129 @@
+// Jenkins Pipeline 示例文件
+// 用于测试 PipelineLens 插件功能
+
+pipeline {
+    agent any
+    
+    environment {
+        // 环境变量定义
+        MAVEN_OPTS = '-Xmx1024m -Xms512m'
+        BUILD_NUMBER = "${BUILD_NUMBER}"
+        WORKSPACE_PATH = "${WORKSPACE}"
+        GIT_BRANCH = "${GIT_BRANCH}"
+    }
+    
+    parameters {
+        // 构建参数
+        string(
+            name: 'BRANCH_NAME', 
+            defaultValue: 'main', 
+            description: 'Git 分支名称'
+        )
+        booleanParam(
+            name: 'SKIP_TESTS', 
+            defaultValue: false, 
+            description: '是否跳过测试'
+        )
+        choice(
+            name: 'ENVIRONMENT', 
+            choices: ['dev', 'staging', 'prod'], 
+            description: '部署环境'
+        )
+    }
+    
+    options {
+        // Pipeline 选项
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 1, unit: 'HOURS')
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "检出代码分支: ${params.BRANCH_NAME}"
+                checkout scm
+                sh 'git log -1'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo "开始构建..."
+                echo "Maven 选项: ${env.MAVEN_OPTS}"
+                sh 'mvn clean compile'
+                echo "构建完成"
+            }
+        }
+        
+        stage('Test') {
+            when {
+                not { 
+                    expression { params.SKIP_TESTS } 
+                }
+            }
+            steps {
+                echo "运行测试..."
+                sh 'mvn test'
+                publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo "打包应用..."
+                sh 'mvn package -DskipTests'
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    def deployEnv = params.ENVIRONMENT
+                    echo "部署到环境: ${deployEnv}"
+                    
+                    if (deployEnv == 'prod') {
+                        input message: '确认部署到生产环境?', ok: '部署'
+                    }
+                    
+                    sh "deploy.sh ${deployEnv}"
+                    echo "部署完成: ${deployEnv}"
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "Pipeline 执行完成"
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            deleteDir()
+        }
+        success {
+            echo "Pipeline 执行成功！"
+            emailext(
+                subject: "构建成功: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "构建成功，请查看详情: ${env.BUILD_URL}",
+                to: 'team@example.com'
+            )
+        }
+        failure {
+            echo "Pipeline 执行失败！"
+            emailext(
+                subject: "构建失败: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "构建失败，请检查日志: ${env.BUILD_URL}console",
+                to: 'team@example.com'
+            )
+        }
+        unstable {
+            echo "Pipeline 状态不稳定"
+        }
+        changed {
+            echo "Pipeline 状态发生变化"
+        }
+    }
+}

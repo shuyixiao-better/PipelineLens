@@ -1,0 +1,86 @@
+<idea-plugin>
+    <id>com.poeticcoder.pipelinelens</id>
+
+    <name>PipelineLens</name>
+    <vendor email="yixiaoshu88@163.com" url="https://www.poeticcoder.com">PoeticCoder</vendor>
+    
+    <description><![CDATA[
+    <h2>PipelineLens - 专业的 Jenkins Pipeline 开发工具</h2>
+    
+    <p>PipelineLens 是一款专为 Jenkins Pipeline 开发设计的 IntelliJ IDEA 插件，提供完整的语法支持、智能补全和可视化增强功能。</p>
+    
+    <h3>🚀 核心功能</h3>
+    
+    <h4>🐳 Jenkins Pipeline 完整支持</h4>
+    <ul>
+        <li><strong>自定义文件类型和图标</strong>：Jenkins 机器人图标，5层主题覆盖防护</li>
+        <li><strong>增强语法高亮</strong>：11种鲜艳颜色的 VS Code 风格语法高亮</li>
+        <li><strong>智能补全</strong>：pipeline、stage、step 等关键字和方法</li>
+        <li><strong>环境变量补全</strong>：自动识别 env.BUILD_NUMBER、env.WORKSPACE 等</li>
+        <li><strong>参数补全</strong>：自动补全 params.APP_NAME、params.DEPLOY_ENV 等</li>
+        <li><strong>文档支持</strong>：悬停显示方法签名和参数说明</li>
+        <li><strong>可自定义颜色</strong>：支持在 IDE 设置中调整语法高亮颜色</li>
+    </ul>
+    
+    <h3>🎯 适用场景</h3>
+    <ul>
+        <li><strong>Jenkins 用户</strong>：提升 Pipeline 开发效率和体验</li>
+        <li><strong>DevOps 工程师</strong>：快速编写和维护 CI/CD 流水线</li>
+        <li><strong>团队协作</strong>：统一 Pipeline 代码规范，提升代码质量</li>
+    </ul>
+    
+    <h3>🎨 技术特色</h3>
+    <ul>
+        <li><strong>智能文件识别</strong>：自动识别 Jenkinsfile、Jenkinsfile.*、*.jenkinsfile 等文件</li>
+        <li><strong>主题兼容</strong>：自定义图标支持亮色和暗色主题</li>
+        <li><strong>性能优化</strong>：线程安全缓存和智能加载</li>
+    </ul>
+    
+    <p>大幅提升 Jenkins Pipeline 开发效率，让 CI/CD 流水线编写更加高效、专业、愉悦！</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.intellij.groovy</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="PipelineLens Notification Group" displayType="BALLOON" />
+        
+        <!-- Jenkins Pipeline支持扩展 -->
+        <fileType name="Jenkins Pipeline" 
+                  implementationClass="com.poeticcoder.jenkins.file.JenkinsFileType" 
+                  fieldName="INSTANCE"
+                  language="Groovy"
+                  extensions="jenkinsfile;pipeline"
+                  patterns="Jenkinsfile;Jenkinsfile.*;*.jenkinsfile;jenkins;pipeline"/>
+        
+        <lang.syntaxHighlighterFactory language="Groovy" 
+            implementationClass="com.poeticcoder.jenkins.highlight.JenkinsSyntaxHighlighterFactory"/>
+        
+        <colorSettingsPage implementation="com.poeticcoder.jenkins.highlight.JenkinsColorSettingsPage"/>
+        
+        <groovy.mapContentProvider implementation="com.poeticcoder.jenkins.provider.JenkinsMapContentProvider"/>
+        
+        <lang.documentationProvider language="Groovy" 
+            implementationClass="com.poeticcoder.jenkins.documentation.JenkinsDocumentationProvider"/>
+        
+        <projectService serviceImplementation="com.poeticcoder.jenkins.gdsl.JenkinsGdslService"/>
+        
+        <postStartupActivity implementation="com.poeticcoder.jenkins.JenkinsFileTypeRegistrar"/>
+        
+        <iconProvider implementation="com.poeticcoder.jenkins.icon.JenkinsIconProvider"/>
+        
+        <fileIconProvider implementation="com.poeticcoder.jenkins.icon.JenkinsFileIconDecorator"/>
+        
+        <notificationGroup id="PipelineLens.Notifications" displayType="BALLOON" key="notification.group.pipelinelens"/>
+    </extensions>
+    
+    <actions>
+        <group id="PipelineLensGroup" 
+               text="PipelineLens 🔍" 
+               description="PipelineLens Jenkins Pipeline 工具"
+               popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>
