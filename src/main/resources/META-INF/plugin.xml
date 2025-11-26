@@ -5,38 +5,38 @@
     <vendor email="yixiaoshu88@163.com" url="https://www.poeticcoder.com">PoeticCoder</vendor>
     
     <description><![CDATA[
-    <h2>PipelineLens - 专业的 Jenkins Pipeline 开发工具</h2>
+    <h2>PipelineLens - Professional Jenkins Pipeline Development Tool</h2>
     
-    <p>PipelineLens 是一款专为 Jenkins Pipeline 开发设计的 IntelliJ IDEA 插件，提供完整的语法支持、智能补全和可视化增强功能。</p>
+    <p>PipelineLens is an IntelliJ IDEA plugin designed specifically for Jenkins Pipeline development, providing comprehensive syntax support, intelligent code completion, and visual enhancements.</p>
     
-    <h3>🚀 核心功能</h3>
+    <h3>🚀 Core Features</h3>
     
-    <h4>🐳 Jenkins Pipeline 完整支持</h4>
+    <h4>🐳 Complete Jenkins Pipeline Support</h4>
     <ul>
-        <li><strong>自定义文件类型和图标</strong>：Jenkins 机器人图标，5层主题覆盖防护</li>
-        <li><strong>增强语法高亮</strong>：11种鲜艳颜色的 VS Code 风格语法高亮</li>
-        <li><strong>智能补全</strong>：pipeline、stage、step 等关键字和方法</li>
-        <li><strong>环境变量补全</strong>：自动识别 env.BUILD_NUMBER、env.WORKSPACE 等</li>
-        <li><strong>参数补全</strong>：自动补全 params.APP_NAME、params.DEPLOY_ENV 等</li>
-        <li><strong>文档支持</strong>：悬停显示方法签名和参数说明</li>
-        <li><strong>可自定义颜色</strong>：支持在 IDE 设置中调整语法高亮颜色</li>
+        <li><strong>Custom File Type and Icon</strong>: Jenkins robot icon with 5-layer theme coverage protection</li>
+        <li><strong>Enhanced Syntax Highlighting</strong>: VS Code-style syntax highlighting with 11 vibrant colors</li>
+        <li><strong>Intelligent Code Completion</strong>: Keywords and methods like pipeline, stage, step, etc.</li>
+        <li><strong>Environment Variable Completion</strong>: Auto-recognition of env.BUILD_NUMBER, env.WORKSPACE, etc.</li>
+        <li><strong>Parameter Completion</strong>: Auto-completion for params.APP_NAME, params.DEPLOY_ENV, etc.</li>
+        <li><strong>Documentation Support</strong>: Hover to display method signatures and parameter descriptions</li>
+        <li><strong>Customizable Colors</strong>: Adjust syntax highlighting colors in IDE settings</li>
     </ul>
     
-    <h3>🎯 适用场景</h3>
+    <h3>🎯 Use Cases</h3>
     <ul>
-        <li><strong>Jenkins 用户</strong>：提升 Pipeline 开发效率和体验</li>
-        <li><strong>DevOps 工程师</strong>：快速编写和维护 CI/CD 流水线</li>
-        <li><strong>团队协作</strong>：统一 Pipeline 代码规范，提升代码质量</li>
+        <li><strong>Jenkins Users</strong>: Boost Pipeline development efficiency and experience</li>
+        <li><strong>DevOps Engineers</strong>: Quickly write and maintain CI/CD pipelines</li>
+        <li><strong>Team Collaboration</strong>: Standardize Pipeline code conventions and improve code quality</li>
     </ul>
     
-    <h3>🎨 技术特色</h3>
+    <h3>🎨 Technical Highlights</h3>
     <ul>
-        <li><strong>智能文件识别</strong>：自动识别 Jenkinsfile、Jenkinsfile.*、*.jenkinsfile 等文件</li>
-        <li><strong>主题兼容</strong>：自定义图标支持亮色和暗色主题</li>
-        <li><strong>性能优化</strong>：线程安全缓存和智能加载</li>
+        <li><strong>Smart File Recognition</strong>: Automatically recognizes Jenkinsfile, Jenkinsfile.*, *.jenkinsfile, and more</li>
+        <li><strong>Theme Compatibility</strong>: Custom icons support both light and dark themes</li>
+        <li><strong>Performance Optimization</strong>: Thread-safe caching and intelligent loading</li>
     </ul>
     
-    <p>大幅提升 Jenkins Pipeline 开发效率，让 CI/CD 流水线编写更加高效、专业、愉悦！</p>
+    <p>Dramatically improve Jenkins Pipeline development efficiency, making CI/CD pipeline writing more efficient, professional, and enjoyable!</p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -78,7 +78,7 @@
     <actions>
         <group id="PipelineLensGroup" 
                text="PipelineLens 🔍" 
-               description="PipelineLens Jenkins Pipeline 工具"
+               description="PipelineLens Jenkins Pipeline Tools"
                popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
