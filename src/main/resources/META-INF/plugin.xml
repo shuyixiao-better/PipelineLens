@@ -53,9 +53,28 @@
                   language="Groovy"
                   extensions="jenkinsfile;pipeline"
                   patterns="Jenkinsfile;Jenkinsfile.*;*.jenkinsfile;jenkins;pipeline"/>
+
+        <fileType name="Nginx Config"
+                  implementationClass="com.poeticcoder.nginx.file.NginxConfFileType"
+                  fieldName="INSTANCE"
+                  language="Nginx"
+                  extensions="conf"
+                  patterns="nginx.conf;*.nginx.conf;*.conf"/>
         
         <lang.syntaxHighlighterFactory language="Groovy" 
             implementationClass="com.poeticcoder.jenkins.highlight.JenkinsSyntaxHighlighterFactory"/>
+
+        <lang.syntaxHighlighterFactory language="Nginx"
+            implementationClass="com.poeticcoder.nginx.highlight.NginxSyntaxHighlighterFactory"/>
+
+        <lang.foldingBuilder language="Nginx"
+            implementationClass="com.poeticcoder.nginx.fold.NginxFoldingBuilder"/>
+
+        <lang.foldingBuilder language="TEXT"
+            implementationClass="com.poeticcoder.nginx.fold.NginxTextFallbackFoldingBuilder"/>
+
+        <lang.braceMatcher language="Nginx"
+            implementationClass="com.poeticcoder.nginx.brace.NginxBraceMatcher"/>
         
         <colorSettingsPage implementation="com.poeticcoder.jenkins.highlight.JenkinsColorSettingsPage"/>
         
@@ -71,6 +90,8 @@
         <iconProvider implementation="com.poeticcoder.jenkins.icon.JenkinsIconProvider"/>
         
         <fileIconProvider implementation="com.poeticcoder.jenkins.icon.JenkinsFileIconDecorator"/>
+
+        <fileTypeOverrider implementation="com.poeticcoder.nginx.file.NginxFileTypeOverrider"/>
         
         <notificationGroup id="PipelineLens.Notifications" displayType="BALLOON" key="notification.group.pipelinelens"/>
     </extensions>

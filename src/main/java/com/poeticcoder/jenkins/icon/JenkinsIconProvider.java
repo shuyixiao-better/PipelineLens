@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.poeticcoder.jenkins.file.JenkinsFileType;
+import com.poeticcoder.nginx.util.NginxFileDetector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +21,7 @@ public class JenkinsIconProvider extends IconProvider implements DumbAware {
 
     private static final Logger LOG = Logger.getInstance(JenkinsIconProvider.class);
     private static final Icon JENKINS_ICON;
+    private static final Icon NGINX_ICON;
     
     static {
         Icon icon = null;
@@ -36,6 +38,15 @@ public class JenkinsIconProvider extends IconProvider implements DumbAware {
             }
         }
         JENKINS_ICON = icon;
+
+        Icon nginxIcon = null;
+        try {
+            nginxIcon = IconLoader.getIcon("/icons/nginx.svg", JenkinsIconProvider.class);
+            LOG.info("Successfully loaded Nginx icon");
+        } catch (Exception e) {
+            LOG.warn("Failed to load Nginx icon", e);
+        }
+        NGINX_ICON = nginxIcon;
     }
 
     @Nullable
@@ -48,6 +59,10 @@ public class JenkinsIconProvider extends IconProvider implements DumbAware {
             if (virtualFile != null && isJenkinsFile(virtualFile)) {
                 LOG.debug("Providing Jenkins icon for file: " + virtualFile.getName());
                 return JENKINS_ICON;
+            }
+            if (virtualFile != null && isNginxFile(virtualFile)) {
+                LOG.debug("Providing Nginx icon for file: " + virtualFile.getName());
+                return NGINX_ICON;
             }
         }
         
@@ -75,5 +90,9 @@ public class JenkinsIconProvider extends IconProvider implements DumbAware {
         }
         
         return false;
+    }
+
+    private boolean isNginxFile(@NotNull VirtualFile file) {
+        return NginxFileDetector.isNginxConfFile(file);
     }
 }

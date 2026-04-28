@@ -6,6 +6,7 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.ProjectActivity;
 import com.poeticcoder.jenkins.file.JenkinsFileType;
+import com.poeticcoder.nginx.file.NginxConfFileType;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,9 @@ public class JenkinsFileTypeRegistrar implements ProjectActivity {
                     fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, "Jenkinsfile");
                     fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, "Jenkinsfile.*");
                     fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, "*.jenkinsfile");
+                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, "nginx.conf");
+                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, "*.nginx.conf");
+                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, "*.conf");
                     
                 } catch (Exception e) {
                     // 忽略异常，可能已经注册过了

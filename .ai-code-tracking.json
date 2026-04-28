@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "records": [
+    {
+      "filePath": "/Users/shuyixiao/IdeaProjects/PipelineLens/src/main/java/com/poeticcoder/jenkins/JenkinsFileTypeRegistrar.java",
+      "timestamp": 1777389306198,
+      "startOffset": 355,
+      "endOffset": 1914,
+      "codeContent": "com.poeticcoder.nginx.file.NginxConfFileType;\nimport kotlin.Unit;\nimport kotlin.coroutines.Continuation;\nimport org.jetbrains.annotations.NotNull;\nimport org.jetbrains.annotations.Nullable;\n\nimport java.util.Arrays;\n\n/**\n * Jenkins文件类型注册器\n * 确保在项目启动时正确注册Jenkins文件类型关联\n */\npublic class JenkinsFileTypeRegistrar implements ProjectActivity {\n\n    @Nullable\n    @Override\n    public Object execute(@NotNull Project project, @NotNull Continuation\u003c? super Unit\u003e continuation) {\n        ApplicationManager.getApplication().invokeLater(() -\u003e {\n            registerJenkinsFileTypes();\n        });\n\n        return null;\n    }\n\n    /**\n     * 注册Jenkins文件类型关联\n     */\n    private void registerJenkinsFileTypes() {\n        try {\n            FileTypeManager fileTypeManager \u003d FileTypeManager.getInstance();\n            \n            ApplicationManager.getApplication().runWriteAction(() -\u003e {\n                try {\n                    removeConflictingAssociations(fileTypeManager);\n                    \n                    fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, \"Jenkinsfile\");\n                    fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, \"Jenkinsfile.*\");\n                    fileTypeManager.associatePattern(JenkinsFileType.INSTANCE, \"*.jenkinsfile\");\n                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, \"nginx.conf\");\n                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, \"*.nginx.conf\");\n                    fileTypeManager.associatePattern(NginxConfFileType.INSTANCE, \"*.conf",
+      "aiProbability": 95,
+      "aiTool": "AI Assistant",
+      "detectionMethod": "REALTIME_SPEED_ANALYSIS",
+      "lineCount": 41
+    },
+    {
+      "filePath": "/Users/shuyixiao/IdeaProjects/PipelineLens/src/main/java/com/poeticcoder/jenkins/icon/JenkinsIconProvider.java",
+      "timestamp": 1777389306199,
+      "startOffset": 390,
+      "endOffset": 3213,
+      "codeContent": "com.poeticcoder.nginx.util.NginxFileDetector;\nimport org.jetbrains.annotations.NotNull;\nimport org.jetbrains.annotations.Nullable;\n\nimport javax.swing.*;\n\n/**\n * Jenkins图标提供器\n */\npublic class JenkinsIconProvider extends IconProvider implements DumbAware {\n\n    private static final Logger LOG \u003d Logger.getInstance(JenkinsIconProvider.class);\n    private static final Icon JENKINS_ICON;\n    private static final Icon NGINX_ICON;\n    \n    static {\n        Icon icon \u003d null;\n        try {\n            icon \u003d IconLoader.getIcon(\"/icons/jenkinsfile.svg\", JenkinsIconProvider.class);\n            LOG.info(\"Successfully loaded Jenkins icon\");\n        } catch (Exception e) {\n            LOG.warn(\"Failed to load Jenkins icon\", e);\n            try {\n                icon \u003d IconLoader.getIcon(\"/icons/jenkinsfile@2x.svg\", JenkinsIconProvider.class);\n                LOG.info(\"Successfully loaded Jenkins @2x icon as fallback\");\n            } catch (Exception ex) {\n                LOG.error(\"Failed to load any Jenkins icon\", ex);\n            }\n        }\n        JENKINS_ICON \u003d icon;\n\n        Icon nginxIcon \u003d null;\n        try {\n            nginxIcon \u003d IconLoader.getIcon(\"/icons/nginx.svg\", JenkinsIconProvider.class);\n            LOG.info(\"Successfully loaded Nginx icon\");\n        } catch (Exception e) {\n            LOG.warn(\"Failed to load Nginx icon\", e);\n        }\n        NGINX_ICON \u003d nginxIcon;\n    }\n\n    @Nullable\n    @Override\n    public Icon getIcon(@NotNull PsiElement element, int flags) {\n        if (element instanceof PsiFile) {\n            PsiFile psiFile \u003d (PsiFile) element;\n            VirtualFile virtualFile \u003d psiFile.getVirtualFile();\n            \n            if (virtualFile !\u003d null \u0026\u0026 isJenkinsFile(virtualFile)) {\n                LOG.debug(\"Providing Jenkins icon for file: \" + virtualFile.getName());\n                return JENKINS_ICON;\n            }\n            if (virtualFile !\u003d null \u0026\u0026 isNginxFile(virtualFile)) {\n                LOG.debug(\"Providing Nginx icon for file: \" + virtualFile.getName());\n                return NGINX_ICON;\n            }\n        }\n        \n        return null;\n    }\n\n    private boolean isJenkinsFile(@NotNull VirtualFile file) {\n        String fileName \u003d file.getName();\n        \n        if (\"Jenkinsfile\".equals(fileName)) {\n            return true;\n        }\n        \n        if (fileName.startsWith(\"Jenkinsfile.\")) {\n            return true;\n        }\n        \n        String lowerFileName \u003d fileName.toLowerCase();\n        if (lowerFileName.endsWith(\".jenkinsfile\")) {\n            return true;\n        }\n        \n        if (file.getFileType() instanceof JenkinsFileType) {\n            return true;\n        }\n        \n        return false;\n    }\n\n    private boolean isNginxFile(@NotNull VirtualFile file) {\n        return NginxFileDetector.isNginxConfFile(file)",
+      "aiProbability": 95,
+      "aiTool": "AI Assistant",
+      "detectionMethod": "REALTIME_SPEED_ANALYSIS",
+      "lineCount": 86
+    },
+    {
+      "filePath": "/Users/shuyixiao/IdeaProjects/PipelineLens/src/main/java/com/poeticcoder/jenkins/icon/JenkinsFileIconDecorator.java",
+      "timestamp": 1777389306200,
+      "startOffset": 223,
+      "endOffset": 1734,
+      "codeContent": "com.poeticcoder.nginx.util.NginxFileDetector;\nimport org.jetbrains.annotations.NotNull;\nimport org.jetbrains.annotations.Nullable;\n\nimport javax.swing.*;\n\n/**\n * Jenkins文件图标装饰器\n */\npublic class JenkinsFileIconDecorator implements FileIconProvider {\n\n    private static final Icon JENKINS_ICON \u003d IconLoader.getIcon(\"/icons/jenkinsfile.svg\", JenkinsFileIconDecorator.class);\n    private static final Icon NGINX_ICON \u003d IconLoader.getIcon(\"/icons/nginx.svg\", JenkinsFileIconDecorator.class);\n\n    @Nullable\n    @Override\n    public Icon getIcon(@NotNull VirtualFile file, int flags, @Nullable Project project) {\n        if (isJenkinsFile(file)) {\n            return JENKINS_ICON;\n        }\n        if (isNginxFile(file)) {\n            return NGINX_ICON;\n        }\n        return null;\n    }\n\n    private boolean isJenkinsFile(@NotNull VirtualFile file) {\n        String fileName \u003d file.getName();\n        \n        if (\"Jenkinsfile\".equals(fileName)) {\n            return true;\n        }\n        \n        if (fileName.startsWith(\"Jenkinsfile.\")) {\n            return true;\n        }\n        \n        String lowerFileName \u003d fileName.toLowerCase();\n        if (lowerFileName.endsWith(\".jenkinsfile\")) {\n            return true;\n        }\n        \n        if (lowerFileName.equals(\"jenkins\") || lowerFileName.equals(\"pipeline\")) {\n            return true;\n        }\n        \n        return false;\n    }\n\n    private boolean isNginxFile(@NotNull VirtualFile file) {\n        return NginxFileDetector.isNginxConfFile(file)",
+      "aiProbability": 95,
+      "aiTool": "AI Assistant",
+      "detectionMethod": "REALTIME_SPEED_ANALYSIS",
+      "lineCount": 51
+    },
+    {
+      "filePath": "/Users/shuyixiao/IdeaProjects/PipelineLens/src/main/java/com/poeticcoder/nginx/highlight/NginxSyntaxHighlighter.java",
+      "timestamp": 1777390598611,
+      "startOffset": 2239,
+      "endOffset": 2279,
+      "codeContent": "LBRACE || tokenType \u003d\u003d NginxTokenTypes.R",
+      "aiProbability": 90,
+      "aiTool": "AI Assistant",
+      "detectionMethod": "REALTIME_SPEED_ANALYSIS",
+      "lineCount": 1
+    },
+    {
+      "filePath": "/Users/shuyixiao/IdeaProjects/PipelineLens/src/main/java/com/poeticcoder/nginx/lexer/NginxLexer.java",
+      "timestamp": 1777390598613,
+      "startOffset": 3146,
+      "endOffset": 3408,
+      "codeContent": ") {\n            position++;\n            tokenEnd \u003d position;\n            tokenType \u003d NginxTokenTypes.LBRACE;\n            return;\n        }\n\n        if (c \u003d\u003d \u0027}\u0027) {\n            position++;\n            tokenEnd \u003d position;\n            tokenType \u003d NginxTokenTypes.R",
+      "aiProbability": 95,
+      "aiTool": "AI Assistant",
+      "detectionMethod": "REALTIME_SPEED_ANALYSIS",
+      "lineCount": 11
+    }
+  ],
+  "toolStats": {
+    "AI Assistant": {
+      "usageCount": 5,
+      "totalLines": 190
+    }
+  }
+}
