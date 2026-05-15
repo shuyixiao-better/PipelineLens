@@ -58,6 +58,6 @@ public class NginxSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType == NginxTokenTypes.IDENTIFIER) {
             return pack(NGINX_IDENTIFIER);
         }
-        return EMPTY;
+        return TextAttributesKey.EMPTY_ARRAY;
     }
 }
