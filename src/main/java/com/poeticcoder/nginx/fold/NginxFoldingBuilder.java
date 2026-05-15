@@ -27,7 +27,7 @@ public class NginxFoldingBuilder extends FoldingBuilderEx {
         String text = root.getText();
         ASTNode node = root.getNode();
         if (text == null || node == null || text.isEmpty()) {
-            return FoldingDescriptor.EMPTY;
+            return FoldingDescriptor.EMPTY_ARRAY;
         }
 
         List<FoldingDescriptor> descriptors = new ArrayList<>();
@@ -54,7 +54,7 @@ public class NginxFoldingBuilder extends FoldingBuilderEx {
             }
         }
 
-        return descriptors.toArray(FoldingDescriptor.EMPTY);
+        return descriptors.toArray(FoldingDescriptor.EMPTY_ARRAY);
     }
 
     @Nullable

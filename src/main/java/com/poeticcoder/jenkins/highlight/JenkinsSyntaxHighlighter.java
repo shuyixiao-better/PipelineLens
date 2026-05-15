@@ -8,6 +8,8 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.groovy.highlighter.GroovySyntaxHighlighter;
 
+import static com.intellij.openapi.editor.colors.TextAttributesKey.EMPTY_ARRAY;
+
 /**
  * Jenkins Pipeline 语法高亮器
  */
@@ -67,6 +69,6 @@ public class JenkinsSyntaxHighlighter extends SyntaxHighlighterBase {
             return new TextAttributesKey[]{JENKINS_KEYWORD};
         }
         
-        return groovyKeys;
+        return EMPTY_ARRAY;
     }
 }

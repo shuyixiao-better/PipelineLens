@@ -26,18 +26,18 @@ public class NginxTextFallbackFoldingBuilder extends FoldingBuilderEx {
     public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
         PsiFile file = root.getContainingFile();
         if (file == null || file.getVirtualFile() == null) {
-            return FoldingDescriptor.EMPTY;
+            return FoldingDescriptor.EMPTY_ARRAY;
         }
 
         String fileName = file.getVirtualFile().getName().toLowerCase();
         if (!NginxFileDetector.isNginxConfFileName(fileName)) {
-            return FoldingDescriptor.EMPTY;
+            return FoldingDescriptor.EMPTY_ARRAY;
         }
 
         String text = root.getText();
         ASTNode node = root.getNode();
         if (text == null || node == null || text.isEmpty()) {
-            return FoldingDescriptor.EMPTY;
+            return FoldingDescriptor.EMPTY_ARRAY;
         }
 
         List<FoldingDescriptor> descriptors = new ArrayList<>();
@@ -55,7 +55,7 @@ public class NginxTextFallbackFoldingBuilder extends FoldingBuilderEx {
             }
         }
 
-        return descriptors.toArray(FoldingDescriptor.EMPTY);
+        return descriptors.toArray(FoldingDescriptor.EMPTY_ARRAY);
     }
 
     @Nullable
