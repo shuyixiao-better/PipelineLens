@@ -91,7 +91,7 @@
         
         <fileIconProvider implementation="com.poeticcoder.jenkins.icon.JenkinsFileIconDecorator"/>
 
-        <fileTypeOverrider implementation="com.poeticcoder.nginx.file.NginxFileTypeOverrider"/>
+
         
         <notificationGroup id="PipelineLens.Notifications" displayType="BALLOON" key="notification.group.pipelinelens"/>
     </extensions>
